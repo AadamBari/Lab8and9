@@ -56,9 +56,10 @@ def images_index():
     
     Complete the code below generating a valid response. 
     """
-	output = docker("images")
-	
-    resp = 'json.dumps(docker_images_to_array(output))
+    
+    output = docker('images')
+    
+    resp = json.dumps(docker_images_to_array((output))
     return Response(response=resp, mimetype="application/json")
 
 @app.route('/containers/<id>', methods=['GET'])
@@ -67,8 +68,9 @@ def containers_show(id):
     Inspect specific container
 
     """
-
-    resp = ''
+    
+    output = docker('inspect')
+    resp = json.dumps(dockers_inspect_array(output))
 
     return Response(response=resp, mimetype="application/json")
 
@@ -78,7 +80,8 @@ def containers_log(id):
     Dump specific container logs
 
     """
-    resp = ''
+    output = docker('container', id, 'logs')
+    resp = json.dumps(docker_logs_to_object(output))
     return Response(response=resp, mimetype="application/json")
 
 
@@ -97,7 +100,8 @@ def containers_remove(id):
     Delete a specific container - must be already stopped/killed
 
     """
-    resp = ''
+    output = docker('rm','-f','container', id)  
+    resp = json.dumps(dockers_delete_specific_array(output))
     return Response(response=resp, mimetype="application/json")
 
 @app.route('/containers', methods=['DELETE'])

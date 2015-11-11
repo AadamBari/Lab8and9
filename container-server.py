@@ -110,8 +110,8 @@ def containers_remove_all():
     Force remove all containers - dangrous!
 
     """
-    output = docker('rm','-f','container')  
-    resp = ''
+    output = docker('rm','$(docker ps -a -q)')  
+    resp = json.dumps(dockers_ps_to_array(output))
     return Response(response=resp, mimetype="application/json")
 
 @app.route('/images', methods=['DELETE'])
@@ -120,8 +120,10 @@ def images_remove_all():
     Force remove all images - dangrous!
 
     """
-    output = docker('rm','-f','images')  
-    resp = ''
+    all = docker_images_to_array(docker('images'))
+    for i in all:
+    	docker('rmi',i['id'])  
+    resp = '{"Count": "%d"}'% len(all)
     return Response(response=resp, mimetype="application/json")
 
 

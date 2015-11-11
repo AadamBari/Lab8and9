@@ -110,6 +110,7 @@ def containers_remove_all():
     Force remove all containers - dangrous!
 
     """
+    output = docker('rm','-f','container')  
     resp = ''
     return Response(response=resp, mimetype="application/json")
 
@@ -119,7 +120,7 @@ def images_remove_all():
     Force remove all images - dangrous!
 
     """
- 
+    output = docker('rm','-f','images')  
     resp = ''
     return Response(response=resp, mimetype="application/json")
 
@@ -243,4 +244,4 @@ def docker_images_to_array(output):
     return all
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0",port=8080, debug=True)
+    app.run(host="0.0.0.0",port=8081, debug=True)

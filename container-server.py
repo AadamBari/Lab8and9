@@ -57,9 +57,7 @@ def images_index():
     Complete the code below generating a valid response. 
     """
     
-    output = docker('images')
-    
-    resp = json.dumps(docker_images_to_array(output))
+    resp = ''
     return Response(response=resp, mimetype="application/json")
 
 @app.route('/containers/<id>', methods=['GET'])
@@ -68,9 +66,8 @@ def containers_show(id):
     Inspect specific container
 
     """
-    
-    output = docker('inspect')
-    resp = json.dumps(dockers_inspect_array(output))
+
+    resp = ''
 
     return Response(response=resp, mimetype="application/json")
 
@@ -80,8 +77,7 @@ def containers_log(id):
     Dump specific container logs
 
     """
-    output = docker('container', id, 'logs')
-    resp = json.dumps(docker_logs_to_object(output))
+    resp = ''
     return Response(response=resp, mimetype="application/json")
 
 
@@ -100,8 +96,7 @@ def containers_remove(id):
     Delete a specific container - must be already stopped/killed
 
     """
-    output = docker('rm','-f','container', id)  
-    resp = json.dumps(dockers_delete_specific_array(output))
+    resp = ''
     return Response(response=resp, mimetype="application/json")
 
 @app.route('/containers', methods=['DELETE'])
@@ -110,8 +105,7 @@ def containers_remove_all():
     Force remove all containers - dangrous!
 
     """
-    output = docker('rm','$(docker ps -a -q)')  
-    resp = json.dumps(dockers_ps_to_array(output))
+    resp = ''
     return Response(response=resp, mimetype="application/json")
 
 @app.route('/images', methods=['DELETE'])
@@ -120,10 +114,8 @@ def images_remove_all():
     Force remove all images - dangrous!
 
     """
-    all = docker_images_to_array(docker('images'))
-    for i in all:
-    	docker('rmi',i['id'])  
-    resp = '{"Count": "%d"}'% len(all)
+ 
+    resp = ''
     return Response(response=resp, mimetype="application/json")
 
 
@@ -246,4 +238,4 @@ def docker_images_to_array(output):
     return all
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0",port=8081, debug=True)
+    app.run(host="0.0.0.0",port=8088, debug=True)
